@@ -10,6 +10,8 @@ import com.nexo.user.domain.persistence.User;
 
 public interface UserService {
 
+    User findByUsername(String username);
+
     List<UserResponse> findAllUsersExceptAuthenticated(Authentication connectedUser);
 
     User registerUser(SaveUser saveUser);

@@ -6,15 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
 @Setter
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisteredUser {
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String jwt;
-
+public class LogoutResponse {
+    private String message;
 }

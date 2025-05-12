@@ -1,12 +1,15 @@
 package com.nexo.user.domain.persistence;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.nexo.chat.domain.persistence.Chat;
 import com.nexo.common.domain.model.AuditableDateEntity;
 import com.nexo.user.domain.util.Role;
 
@@ -17,6 +20,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +37,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User extends AuditableDateEntity implements UserDetails {
+    private static final int LAST_ACTIVATE_INTERVAL = 5;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -47,6 +53,11 @@ public class User extends AuditableDateEntity implements UserDetails {
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private LocalDateTime lastSeen;
+    @OneToMany(mappedBy = "sender")
+    private List<Chat> chatsAsSender;
+    @OneToMany(mappedBy = "recipient")
+    private List<Chat> chatsAsRecipient;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -62,6 +73,11 @@ public class User extends AuditableDateEntity implements UserDetails {
                 .map(permission -> permission.name())
                 .map(permission -> new SimpleGrantedAuthority(permission))
                 .toList();
+    }
+
+    @Transient
+    public boolean isUserOnline() {
+        return lastSeen != null && lastSeen.isAfter(LocalDateTime.now().minusMinutes(LAST_ACTIVATE_INTERVAL));
     }
 
 }

@@ -6,5 +6,4 @@ public enum NotificationType {
     IMAGE,
     AUDIO,
     VIDEO,
-
 }
