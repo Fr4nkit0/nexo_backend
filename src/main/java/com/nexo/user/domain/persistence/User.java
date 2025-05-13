@@ -1,6 +1,7 @@
 package com.nexo.user.domain.persistence;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -61,18 +62,19 @@ public class User extends AuditableDateEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (role == null) {
-            return null;
-        }
-        if (role.getPermissions() == null) {
-            return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
 
+        // Añadir permisos individuales
+        if (role != null && role.getPermissions() != null) {
+            authorities.addAll(role.getPermissions().stream()
+                    .map(permission -> new SimpleGrantedAuthority(permission.name()))
+                    .toList());
+
+            // Añadir el rol como autoridad
+            authorities.add(new SimpleGrantedAuthority(role.name())); // e.g. "ROLE_USER"
         }
-        return role.getPermissions()
-                .stream()
-                .map(permission -> permission.name())
-                .map(permission -> new SimpleGrantedAuthority(permission))
-                .toList();
+
+        return authorities;
     }
 
     @Transient

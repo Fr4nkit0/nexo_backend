@@ -20,8 +20,13 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationControllerImpl implements AuthenticationController {
-    private AuthenticationService authenticationService;
-    private UserService userService;
+    private final AuthenticationService authenticationService;
+    private final UserService userService;
+
+    public AuthenticationControllerImpl(AuthenticationService authenticationService, UserService userService) {
+        this.authenticationService = authenticationService;
+        this.userService = userService;
+    }
 
     @Override
     @PostMapping("/authenticate")

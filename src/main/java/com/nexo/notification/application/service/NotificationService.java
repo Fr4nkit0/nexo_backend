@@ -1,7 +1,9 @@
 package com.nexo.notification.application.service;
 
-import javax.management.Notification;
+import java.util.UUID;
+
+import com.nexo.notification.domain.model.Notification;
 
 public interface NotificationService {
-    void sendNotification(String userId, Notification notification);
+    void sendNotification(UUID userId, Notification notification);
 }

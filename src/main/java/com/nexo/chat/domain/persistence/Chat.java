@@ -10,12 +10,12 @@ import com.nexo.message.domain.util.MessageState;
 import com.nexo.message.domain.util.MessageType;
 import com.nexo.user.domain.persistence.User;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
@@ -39,33 +39,33 @@ public class Chat extends AuditableDateEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @ManyToOne
-    @Column(name = "sender_id", nullable = false)
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
     @ManyToOne
-    @Column(name = "recipient_id", nullable = false)
+    @JoinColumn(name = "recipient_id", nullable = false)
     private User recipient;
     @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
     @OrderBy("createdAt DESC")
     private List<Message> messages;
 
     @Transient
-    public String getChatName(String senderId) {
-        if (recipient.getId().equals(UUID.fromString(senderId))) {
+    public String getChatName(UUID senderId) {
+        if (recipient.getId().equals(senderId)) {
             return sender.getFirstName() + " " + sender.getLastName();
         }
         return recipient.getFirstName() + " " + recipient.getLastName();
     }
 
     @Transient
-    public String getTargetChatName(String senderId) {
-        if (sender.getId().equals(UUID.fromString(senderId))) {
+    public String getTargetChatName(UUID senderId) {
+        if (sender.getId().equals(senderId)) {
             return sender.getFirstName() + " " + sender.getLastName();
         }
         return recipient.getFirstName() + " " + recipient.getLastName();
     }
 
     @Transient
-    public long getUnreadMessages(String senderId) {
+    public long getUnreadMessages(UUID senderId) {
         return this.messages
                 .stream()
                 .filter(m -> m.getSenderId().equals(senderId))

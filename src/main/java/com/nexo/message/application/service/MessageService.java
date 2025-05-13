@@ -1,6 +1,7 @@
 package com.nexo.message.application.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,9 +13,9 @@ public interface MessageService {
 
     void saveMessage(MessageRequest messageRequest);
 
-    void setMessagesToSeen(String chatId, Authentication authentication);
+    void setMessagesToSeen(UUID chatId, Authentication authentication);
 
-    void uploadMediaMessage(String chatId, MultipartFile file, Authentication authentication);
+    void uploadMediaMessage(UUID chatId, MultipartFile file, Authentication authentication);
 
-    List<MessageResponse> findChatMessages(String chatId);
+    List<MessageResponse> findChatMessages(UUID chatId);
 }

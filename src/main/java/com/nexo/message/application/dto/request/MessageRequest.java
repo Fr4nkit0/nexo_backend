@@ -1,5 +1,7 @@
 package com.nexo.message.application.dto.request;
 
+import java.util.UUID;
+
 import com.nexo.message.domain.util.MessageType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,9 +16,9 @@ import lombok.Setter;
 @Builder
 public class MessageRequest {
     private String content;
-    private String senderId;
-    private String receiverId;
+    private UUID senderId;
+    private UUID receiverId;
     private MessageType type;
-    private String chatId;
+    private UUID chatId;
 
 }

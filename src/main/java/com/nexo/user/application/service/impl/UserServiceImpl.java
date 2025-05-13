@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nexo.security.application.validation.PasswordValidator;
 import com.nexo.user.application.dto.request.SaveUser;
@@ -16,6 +17,7 @@ import com.nexo.user.domain.repository.UserRepository;
 import com.nexo.user.domain.util.Role;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -28,11 +30,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return this.getUserByUsername(username);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserResponse> findAllUsersExceptAuthenticated(Authentication connectedUser) {
         // Cambiar en el futuro dado que esta funcion me trae todos los Usuarios
         return userRepository.findAll()

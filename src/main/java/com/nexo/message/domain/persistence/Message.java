@@ -1,5 +1,7 @@
 package com.nexo.message.domain.persistence;
 
+import java.util.UUID;
+
 import com.nexo.chat.domain.persistence.Chat;
 import com.nexo.common.domain.model.AuditableUserEntity;
 import com.nexo.message.domain.util.MessageState;
@@ -57,9 +59,9 @@ public class Message extends AuditableUserEntity {
     @JoinColumn(name = "chat_id")
     private Chat chat;
     @Column(name = "sender_id", nullable = false)
-    private String senderId;
+    private UUID senderId;
     @Column(name = "receiver_id", nullable = false)
-    private String receiverId;
+    private UUID receiverId;
     private String mediaFilePath;
 
 }

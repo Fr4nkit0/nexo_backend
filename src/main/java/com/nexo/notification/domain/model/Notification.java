@@ -1,5 +1,7 @@
 package com.nexo.notification.domain.model;
 
+import java.util.UUID;
+
 import com.nexo.message.domain.util.MessageType;
 import com.nexo.notification.domain.util.NotificationType;
 
@@ -14,11 +16,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Notificacion {
-    private String chatId;
+public class Notification {
+    private UUID chatId;
     private String content;
-    private String senderId;
-    private String receiverId;
+    private UUID senderId;
+    private UUID receiverId;
     private String chatName;
     private MessageType messageType;
     private NotificationType type;

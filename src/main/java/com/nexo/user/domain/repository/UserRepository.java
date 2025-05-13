@@ -16,12 +16,12 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("SELECT u FROM User u WHERE u.email=?1")
     Optional<User> findByEmail(String email);
 
-    @Query("SELECT u FROM User WHERE u.id !=?1")
+    @Query("SELECT u FROM User u WHERE u.id !=?1")
     List<User> findAllUsersExceptSelf(UUID publicId);
 
-    @Query("SELECT u FROM User WHERE u.id =?1")
+    @Query("SELECT u FROM User u WHERE u.id =?1")
     Optional<User> findByPublicId(UUID publicId);
 
-    @Query("SELECT u FROM User WHERE u.username =?1")
+    @Query("SELECT u FROM User u WHERE u.username =?1")
     Optional<User> findByUsername(String username);
 }

@@ -51,21 +51,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         String username = jwtService.extractUsername(jwt);
         // 4. Setear objecto authentication dentro security content holder
+        System.out.println(username);
         UserDetails userDetails = userService.findByUsername(username);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                username, null, userDetails.getAuthorities());
+                userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         // 5. ejecutar el resto de filtro
         filterChain.doFilter(request, response);
     }
 
     private boolean validateToken(String jwt) {
+        System.out.println(jwt);
         boolean isValid = jwtRepository.findByToken(jwt)
                 .map(jwtToken -> jwtToken.isValid() &&
                         jwtToken.getExpiration().after(new Date(System.currentTimeMillis())))
                 .orElse(false);
+        System.out.println(isValid);
         if (!isValid) {
-            System.out.println("Token Invaido");
+            System.out.println("Token Invalido");
             updateTokenStatus(jwt);
         }
         return isValid;

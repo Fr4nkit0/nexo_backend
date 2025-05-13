@@ -20,6 +20,10 @@ security:
   jwt:
     secret-key: jJ4Gs6z0vWZlJMQW6QzK6AzyvSvhk1C2H1Xt1b+bh9GqB0HnEwNfX1pWxW4W2PjN
     expiration-in-minutes: 30
+logging:
+  level:
+    org.hibernate.hql: DEBUG
+    org.hibernate.query: TRACE
 server:
   port: ${SERVER_PORT:8081}
   servlet:
